@@ -3,249 +3,397 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>성경 인물 카드 갤러리 (24종)</title>
+    <title>성경 인물 유형 테스트</title>
     <style>
         :root {
-            --bg-color: #f7f6f0;
+            --bg-color: #f5f7fa;
             --card-bg: #ffffff;
-            --primary-color: #4a5568;
-            --accent-color: #319795;
-            --border-color: #e2e8f0;
+            --primary-color: #4a6fa5;
+            --primary-hover: #3b5984;
+            --text-color: #333333;
+            --sub-text: #666666;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
         }
 
         body {
             background-color: var(--bg-color);
-            color: #2d3748;
-            padding: 20px 15px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
-            padding-top: 10px;
-        }
-
-        .header h1 {
-            font-size: 1.6rem;
-            color: #2c3e50;
-            margin-bottom: 6px;
-        }
-
-        .header p {
-            font-size: 0.95rem;
-            color: #718096;
-        }
-
-        /* 반응형 카드 그리드 (모바일 2열 기본) */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        @media (min-width: 600px) {
-            .grid-container {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 18px;
-            }
-        }
-
-        @media (min-width: 900px) {
-            .grid-container {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 20px;
-            }
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border: 1px solid var(--border-color);
+            color: var(--text-color);
             display: flex;
-            flex-direction: column;
-            cursor: pointer;
-            transition: transform 0.15s ease-in-out;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .card:active {
-            transform: scale(0.97);
-        }
-
-        .card-img-wrapper {
-            width: 100%;
-            padding-top: 133.33%; /* 3:4 비율 유지 */
-            position: relative;
-            background-color: #edf2f7;
-        }
-
-        .card-img-wrapper img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .card-body {
-            padding: 10px 8px;
-            text-align: center;
-            background-color: #fff;
-        }
-
-        .card-title {
-            font-size: 1.05rem;
-            font-weight: bold;
-            color: #2d3748;
-            margin-bottom: 2px;
-        }
-
-        .card-sub {
-            font-size: 0.75rem;
-            color: #a0aec0;
-        }
-
-        /* 이미지 확대 모달 */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.85);
-            z-index: 999;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
             padding: 20px;
         }
 
-        .modal.active {
-            display: flex;
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            padding: 30px 20px;
+            text-align: center;
         }
 
-        .modal-content {
-            max-width: 95%;
-            max-height: 90%;
-            border-radius: 10px;
-            object-fit: contain;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        /* 시작 화면 */
+        .screen { display: none; }
+        .screen.active { display: block; }
+
+        h1 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 12px;
         }
 
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            color: #fff;
-            font-size: 32px;
+        p {
+            font-size: 0.95rem;
+            color: var(--sub-text);
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* 진행 바 */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #e0e6ed;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            width: 0%;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        /* 질문 영역 */
+        .q-number {
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .q-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            word-break: keep-all;
+        }
+
+        /* 선택지 버튼 */
+        .option-btn {
+            width: 100%;
+            padding: 18px;
+            margin-bottom: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background-color: #fff;
+            color: var(--text-color);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            word-break: keep-all;
+            line-height: 1.4;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary-color);
+            background-color: #f0f4f8;
+        }
+
+        /* 결과 화면 */
+        .result-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background-color: #e8f0fe;
+            color: var(--primary-color);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .result-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .result-quote {
+            font-style: italic;
+            color: var(--primary-color);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        .result-box {
+            background-color: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .result-box h4 {
+            margin-bottom: 8px;
+            color: #2d3748;
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>성경 인물 카드 (24종)</h1>
-        <p>카드를 터치하면 전체 화면으로 확대됩니다.</p>
-    </div>
+    <div class="container">
+        <!-- 1. 시작 화면 -->
+        <div id="startScreen" class="screen active">
+            <h1>나의 성경 인물 유형 테스트</h1>
+            <p>10개의 간단한 질문에 답하고<br>나와 가장 닮은 성경 속 인물을 찾아보세요!</p>
+            <button class="btn" onclick="startTest()">테스트 시작하기</button>
+        </div>
 
-    <div class="grid-container" id="cardGrid">
-        <!-- 자바스크립트로 24개의 카드가 자동으로 생성됩니다 -->
-    </div>
+        <!-- 2. 질문 화면 -->
+        <div id="questionScreen" class="screen">
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div class="q-number" id="qNumber">Q1</div>
+            <div class="q-text" id="qText">질문 내용이 들어갑니다.</div>
+            
+            <button class="option-btn" id="optA" onclick="selectOption('A')">선택지 A</button>
+            <button class="option-btn" id="optB" onclick="selectOption('B')">선택지 B</button>
+        </div>
 
-    <!-- 이미지 확대용 모달 -->
-    <div class="modal" id="imageModal" onclick="closeModal()">
-        <span class="close-btn">&times;</span>
-        <img class="modal-content" id="modalImg" src="" alt="카드 확대 보기">
+        <!-- 3. 결과 화면 -->
+        <div id="resultScreen" class="screen">
+            <div class="result-badge" id="resType">유형 명칭</div>
+            <h2 class="result-title" id="resName">인물 이름</h2>
+            <div class="result-quote" id="resQuote">"핵심 문구"</div>
+            
+            <div class="result-box">
+                <h4>📌 나만의 특징</h4>
+                <p id="resDesc">인물 상세 설명 및 특징이 표시됩니다.</p>
+            </div>
+
+            <button class="btn" onclick="restartTest()">다시 테스트하기</button>
+        </div>
     </div>
 
     <script>
-        // 24개 인물 데이터 및 실사 이미지 인코딩 데이터
-        const cardsData = [
-            {
-                name: "다비다",
-                verse: "사도행전 9:36",
-                // 업로드 해주신 실물 사진 Data URI
-                image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1ebX2BkZeNa1dfp5mBk26BlnW/2wBDARESEhgVGC8aGi9WQ0NDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkP/wgARCAUAA8ADASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAECAwX/xAAYAQEBAQEBAAAAAAAAAAAAAAAAAQMCBP/aAA020a0s8="
-            },
-            {
+        // 10가지 인물 정보 데이터베이스
+        const characters = {
+            ezra: {
                 name: "에스라",
-                verse: "에스라 7:10",
-                image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1ebX2BkZeNa1dfp5mBk26BlnW/2wBDARESEhgVGC8aGi9WQ0NDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkP/wgARCAUAA8ADASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAECAwX/xAAYAQEBAQEBAAAAAAAAAAAAAAAAAQMCBP/aAA020a0s8="
+                type: "성경탐구형 (말씀 연구자형)",
+                quote: "이 말씀, 그냥 넘기기엔 너무 궁금해요.",
+                desc: "성경을 깊이 파고들며 묵상하는 진리의 뿌리 세움꾼입니다. 본문 탐구와 신학적 질문에 열정이 있으며 깊이 있는 신앙을 지향합니다."
             },
-            {
+            tabitha: {
+                name: "다비다 (도르가)",
+                type: "사랑실천형 (자비 행위자형)",
+                quote: "작은 손길이 큰 사랑이 됩니다.",
+                desc: "말보다 행동으로 사랑을 나누며, 아프고 소외된 이들을 따뜻하게 돌보는 섬김의 사람입니다."
+            },
+            paul: {
+                name: "바울",
+                type: "비전추구형 (소명리더형)",
+                quote: "큰 그림을 그리며 앞으로 나아갑니다.",
+                desc: "하나님 나라와 복음을 위해 담대하게 비전을 세우고 추진하는 행동파 영적 리더입니다."
+            },
+            timothy: {
+                name: "디모데",
+                type: "말씀전달형 (진리교사형)",
+                quote: "말씀이 가슴에 들어오면 그냥 지나칠 수 없어요!",
+                desc: "깨달은 말씀의 감동과 진리를 사람들에게 열정적으로 전달하고 가르치는 사명자입니다."
+            },
+            elijah: {
                 name: "엘리야",
-                verse: "열왕기상 19:12-13",
-                image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1ebX2BkZeNa1dfp5mBk26BlnW/2wBDARESEhgVGC8aGi9WQ0NDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkP/wgARCAUAA8ADASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAECAwX/xAAYAQEBAQEBAAAAAAAAAAAAAAAAAQMCBP/aAA020a0s8="
+                type: "영적전투형 (기도세움꾼)",
+                quote: "세미한 소리 가운데 주님의 뜻을 듣습니다.",
+                desc: "세상의 흐름에 타협하지 않고 오직 하나님의 음성에 귀 기울이며 기도와 영적 전투에 힘쓰는 파수꾼입니다."
+            },
+            abraham: {
+                name: "아브라함",
+                type: "믿음순종형 (모험가형)",
+                quote: "너의 본토 친척 아비 집을 떠나 내가 지시할 땅으로 가라.",
+                desc: "보이지 않는 길이라도 하나님의 약속 하나만을 믿고 담대히 발걸음을 내딛는 순종의 사람입니다."
+            },
+            hannah: {
+                name: "한나",
+                type: "간구기도형 (통곡의 기도자)",
+                quote: "내 마음을 여호와 앞에 토한 것뿐입니다.",
+                desc: "마음의 고통과 애통함을 간절한 기도로 승화시키며 하나님과의 깊은 친밀함을 누리는 기도자입니다."
+            },
+            nehemiah: {
+                name: "느헤미야",
+                type: "공동체건설형 (행정기획가)",
+                quote: "일어나 무너진 성벽을 다시 건축하자!",
+                desc: "무너진 공동체를 정비하고 강한 기획력과 실행력으로 조직을 다시 일으켜 세우는 정리가입니다."
+            },
+            david: {
+                name: "다윗",
+                type: "찬양예배형 (순수한 동행자)",
+                quote: "여호와는 나의 목자시니 내게 부족함이 없으리로다.",
+                desc: "어떠한 상황 속에서도 하나님을 찬양하고 예배하며, 정직하고 순수한 마음으로 동행하는 사람입니다."
+            },
+            barnabas: {
+                name: "바나바",
+                type: "격려격려형 (위로와 동역자)",
+                quote: "착한 사람이요, 성령과 믿음이 충만한 사람.",
+                desc: "사람들의 가능성을 발견해 주고 격려하며, 사람과 사람을 연결해 주는 포용력 넘치는 위로자입니다."
+            }
+        };
+
+        // 10개 질문 및 선택지 (선택 시 연결되는 인물 키값)
+        const questions = [
+            {
+                q: "1. 말씀을 대할 때 나에게 더 가까운 모습은?",
+                a: { text: "왜 이런 구절이 쓰였는지 배경과 의미를 깊이 연구한다.", key: "ezra" },
+                b: { text: "말씀을 통해 깨달은 감동을 곧바로 누군가에게 전하고 싶다.", key: "timothy" }
             },
             {
-                name: "아브라함",
-                verse: "창세기 12:1",
-                image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1ebX2BkZeNa1dfp5mBk26BlnW/2wBDARESEhgVGC8aGi9WQ0NDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkP/wgARCAUAA8ADASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAECAwX/xAAYAQEBAQEBAAAAAAAAAAAAAAAAAQMCBP/aAA020a0s8="
+                q: "2. 공동체 안에서 나에게 더 편한 역할은?",
+                a: { text: "주변에 도움이 필요한 사람을 찾아 실질적으로 챙겨준다.", key: "tabitha" },
+                b: { text: "힘들어하는 사람 곁에서 이야기를 듣고 위로와 격려를 해준다.", key: "barnabas" }
             },
-            // 나머지 20개 인물 데모 데이터
-            { name: "바울", verse: "사도행전 20:24", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EB%B0%94%EC%9A%B8" },
-            { name: "디모데", verse: "디모데후서 4:2", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EB%94%94%EB%AA%A8%EB%8D%B0" },
-            { name: "한나", verse: "사무엘상 1:13", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%ED%95%9C%EB%82%98" },
-            { name: "느헤미야", verse: "느헤미야 2:18", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EB%8A%90%ED%97%88%EB%AF%B8%EC%95%BC" },
-            { name: "다윗", verse: "시편 23:1", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EB%8B%A4%EC%9C%9B" },
-            { name: "바나바", verse: "사도행전 11:24", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EB%B0%94%EB%82%98%EB%B0%94" },
-            { name: "모세", verse: "출애굽기 3:4", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EB%AA%A8%EC%84%B8" },
-            { name: "요셉", verse: "창세기 39:2", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EC%9A%94%EC%85%89" },
-            { name: "에스더", verse: "에스더 4:16", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EC%97%90%EC%8A%A4%EB%8D%94" },
-            { name: "다니엘", verse: "다니엘 6:10", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EB%8B%A4%EB%8B%88%EC%97%98" },
-            { name: "베드로", verse: "마태복음 16:16", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EB%B2%A0%EB%93%9C%EB%A1%9C" },
-            { name: "요한", verse: "요한일서 4:7", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EC%9A%94%ED%95%9C" },
-            { name: "여호수아", verse: "여호수아 1:9", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EC%97%AC%ED%98%B8%EC%88%98%EC%95%84" },
-            { name: "기드온", verse: "사사기 6:12", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EA%B8%B0%EB%93%9C%EC%98%A8" },
-            { name: "루디아", verse: "사도행전 16:14", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EB%A3%A8%EB%94%94%EC%95%84" },
-            { name: "룻", verse: "룻기 1:16", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EB%AF%AF" },
-            { name: "사무엘", verse: "사무엘상 3:10", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EC%82%AC%EB%AC%B4%EC%97%98" },
-            { name: "이사야", verse: "이사야 6:8", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EC%9D%B4%EC%82%AC%EC%95%BC" },
-            { name: "예레미야", verse: "예레미야 1:5", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EC%98%88%EB%A0%88%EB%AF%B8%EC%95%BC" },
-            { name: "스데반", verse: "사도행전 7:59", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EC%8A%A4%EB%8D%B0%EB%B0%98" }
+            {
+                q: "3. 새로운 일을 시작할 때 나의 방식은?",
+                a: { text: "하나님의 거대한 비전과 목적을 먼저 바라보고 방향을 잡는다.", key: "paul" },
+                b: { text: "보이지 않는 미래라도 주님의 말씀이라면 일단 믿고 출발한다.", key: "abraham" }
+            },
+            {
+                q: "4. 기도할 때 나와 더 비슷한 스타일은?",
+                a: { text: "내 마음의 아픔과 솔직한 심정을 하나님께 토로하며 기도한다.", key: "hannah" },
+                b: { text: "세상의 소음을 뒤로하고 조용히 하나님의 세미한 음성을 기다린다.", key: "elijah" }
+            },
+            {
+                q: "5. 공동체에 어려움이나 문제가 생겼을 때 나의 행동은?",
+                a: { text: "문제를 구체적으로 분석하고 체계적인 해결 방안을 기획한다.", key: "nehemiah" },
+                b: { text: "하나님께 마음을 드리고 찬양과 예배로 정면 돌파한다.", key: "david" }
+            },
+            {
+                q: "6. 신앙생활에서 내가 더 중요하게 생각하는 가치는?",
+                a: { text: "성경을 바르게 이해하고 체계적으로 지식을 갖추는 것", key: "ezra" },
+                b: { text: "배운 말씀을 삶속에서 실천하고 봉사하는 것", key: "tabitha" }
+            },
+            {
+                q: "7. 누군가를 양육하거나 도울 때 나의 모습은?",
+                a: { text: "명확한 진리와 말씀을 가르쳐 신앙의 기준을 잡아준다.", key: "timothy" },
+                b: { text: "상대방의 잠재력을 믿어주고 칭찬과 격려로 세워준다.", key: "barnabas" }
+            },
+            {
+                q: "8. 하나님이 나에게 원하시는 삶의 모습은?",
+                a: { text: "안주하지 않고 새로운 영역과 사명을 향해 도전하는 삶", key: "paul" },
+                b: { text: "현재 내 삶의 자리에서 기쁨으로 하나님을 찬양하는 삶", key: "david" }
+            },
+            {
+                q: "9. 내 신앙의 가장 큰 동력(힘)은?",
+                a: { text: "하나님이 주시는 불같은 소명과 약속에 대한 순종", key: "abraham" },
+                b: { text: "골방에서 하나님과 독대하며 나누는 깊은 기도", key: "hannah" }
+            },
+            {
+                q: "10. 조직이나 팀을 정비할 때 더 마음이 가는 방향은?",
+                a: { text: "목표 달성을 위해 무너진 시스템을 신속히 재건하는 것", key: "nehemiah" },
+                b: { text: "영적 영분별력을 가지고 거룩한 정체성을 지키는 것", key: "elijah" }
+            }
         ];
 
-        // 동적으로 24개 카드 HTML 생성
-        const grid = document.getElementById('cardGrid');
-        cardsData.forEach(card => {
-            const cardElement = document.createElement('div');
-            cardElement.className = 'card';
-            cardElement.onclick = () => openModal(card.image);
-            
-            cardElement.innerHTML = `
-                <div class="card-img-wrapper">
-                    <img src="${card.image}" alt="${card.name}">
-                </div>
-                <div class="card-body">
-                    <div class="card-title">${card.name}</div>
-                    <div class="card-sub">${card.verse}</div>
-                </div>
-            `;
-            grid.appendChild(cardElement);
-        });
+        let currentQ = 0;
+        let scores = {};
 
-        // 모달 열기/닫기
-        function openModal(imgSrc) {
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImg');
-            modalImg.src = imgSrc;
-            modal.classList.add('active');
+        function startTest() {
+            currentQ = 0;
+            // 점수 초기화
+            for (let k in characters) scores[k] = 0;
+            
+            showScreen('questionScreen');
+            renderQuestion();
         }
 
-        function closeModal() {
-            document.getElementById('imageModal').classList.remove('active');
+        function renderQuestion() {
+            const q = questions[currentQ];
+            document.getElementById('qNumber').innerText = `Q${currentQ + 1} / ${questions.length}`;
+            document.getElementById('qText').innerText = q.q;
+            document.getElementById('optA').innerText = q.a.text;
+            document.getElementById('optB').innerText = q.b.text;
+            
+            // 진행률 업데이트
+            const progressPercent = ((currentQ) / questions.length) * 100;
+            document.getElementById('progress').style.width = `${progressPercent}%`;
+        }
+
+        function selectOption(option) {
+            const q = questions[currentQ];
+            const selectedKey = (option === 'A') ? q.a.key : q.b.key;
+            
+            // 점수 가산
+            scores[selectedKey] = (scores[selectedKey] || 0) + 1;
+
+            currentQ++;
+            if (currentQ < questions.length) {
+                renderQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            showScreen('resultScreen');
+
+            // 가장 높은 점수를 받은 인물 찾기
+            let maxScore = -1;
+            let resultKey = "paul"; // 기본값
+
+            for (let key in scores) {
+                if (scores[key] > maxScore) {
+                    maxScore = scores[key];
+                    resultKey = key;
+                }
+            }
+
+            const res = characters[resultKey];
+            document.getElementById('resType').innerText = res.type;
+            document.getElementById('resName').innerText = res.name;
+            document.getElementById('resQuote').innerText = `"${res.quote}"`;
+            document.getElementById('resDesc').innerText = res.desc;
+        }
+
+        function restartTest() {
+            showScreen('startScreen');
+        }
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
         }
     </script>
 </body>
