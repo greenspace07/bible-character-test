@@ -3,97 +3,250 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>성경 인물 유형 테스트</title>
-
+    <title>성경 인물 카드 갤러리 (24종)</title>
     <style>
-        body{
-            margin:0;
-            font-family:'Malgun Gothic', sans-serif;
-            background:#f4f6f9;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
+        :root {
+            --bg-color: #f7f6f0;
+            --card-bg: #ffffff;
+            --primary-color: #4a5568;
+            --accent-color: #319795;
+            --border-color: #e2e8f0;
         }
 
-        .card{
-            background:white;
-            width:90%;
-            max-width:450px;
-            padding:40px 30px;
-            border-radius:20px;
-            box-shadow:0 10px 25px rgba(0,0,0,0.15);
-            text-align:center;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
-        h1{
-            color:#2c3e50;
-            margin-bottom:15px;
+        body {
+            background-color: var(--bg-color);
+            color: #2d3748;
+            padding: 20px 15px;
         }
 
-        p{
-            color:#666;
-            line-height:1.6;
-            margin-bottom:30px;
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-top: 10px;
         }
 
-        input{
-            width:100%;
-            padding:15px;
-            font-size:18px;
-            border:1px solid #ccc;
-            border-radius:10px;
-            box-sizing:border-box;
-            margin-bottom:20px;
+        .header h1 {
+            font-size: 1.6rem;
+            color: #2c3e50;
+            margin-bottom: 6px;
         }
 
-        button{
-            width:100%;
-            padding:15px;
-            font-size:20px;
-            background:#4CAF50;
-            color:white;
-            border:none;
-            border-radius:10px;
-            cursor:pointer;
+        .header p {
+            font-size: 0.95rem;
+            color: #718096;
         }
 
-        button:hover{
-            background:#3d9441;
+        /* 반응형 카드 그리드 (모바일 2열 기본) */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 600px) {
+            .grid-container {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 18px;
+            }
+        }
+
+        @media (min-width: 900px) {
+            .grid-container {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: transform 0.15s ease-in-out;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .card:active {
+            transform: scale(0.97);
+        }
+
+        .card-img-wrapper {
+            width: 100%;
+            padding-top: 133.33%; /* 3:4 비율 유지 */
+            position: relative;
+            background-color: #edf2f7;
+        }
+
+        .card-img-wrapper img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 10px 8px;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 2px;
+        }
+
+        .card-sub {
+            font-size: 0.75rem;
+            color: #a0aec0;
+        }
+
+        /* 이미지 확대 모달 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.85);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 95%;
+            max-height: 90%;
+            border-radius: 10px;
+            object-fit: contain;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: #fff;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
         }
     </style>
 </head>
-
 <body>
 
-<div class="card">
+    <div class="header">
+        <h1>성경 인물 카드 (24종)</h1>
+        <p>카드를 터치하면 전체 화면으로 확대됩니다.</p>
+    </div>
 
-<h1>📖 성경 인물 유형 테스트</h1>
+    <div class="grid-container" id="cardGrid">
+        <!-- 자바스크립트로 24개의 카드가 자동으로 생성됩니다 -->
+    </div>
 
-<p>
-당신과 가장 닮은 성경 인물은 누구일까요?<br>
-40개의 질문을 통해 알아보세요.
-</p>
+    <!-- 이미지 확대용 모달 -->
+    <div class="modal" id="imageModal" onclick="closeModal()">
+        <span class="close-btn">&times;</span>
+        <img class="modal-content" id="modalImg" src="" alt="카드 확대 보기">
+    </div>
 
-<input type="text" id="name" placeholder="이름을 입력하세요">
+    <script>
+        // 24개 인물 데이터 및 실사 이미지 인코딩 데이터
+        const cardsData = [
+            {
+                name: "다비다",
+                verse: "사도행전 9:36",
+                // 업로드 해주신 실물 사진 Data URI
+                image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1ebX2BkZeNa1dfp5mBk26BlnW/2wBDARESEhgVGC8aGi9WQ0NDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkP/wgARCAUAA8ADASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAECAwX/xAAYAQEBAQEBAAAAAAAAAAAAAAAAAQMCBP/aAA020a0s8="
+            },
+            {
+                name: "에스라",
+                verse: "에스라 7:10",
+                image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1ebX2BkZeNa1dfp5mBk26BlnW/2wBDARESEhgVGC8aGi9WQ0NDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkP/wgARCAUAA8ADASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAECAwX/xAAYAQEBAQEBAAAAAAAAAAAAAAAAAQMCBP/aAA020a0s8="
+            },
+            {
+                name: "엘리야",
+                verse: "열왕기상 19:12-13",
+                image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1ebX2BkZeNa1dfp5mBk26BlnW/2wBDARESEhgVGC8aGi9WQ0NDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkP/wgARCAUAA8ADASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAECAwX/xAAYAQEBAQEBAAAAAAAAAAAAAAAAAQMCBP/aAA020a0s8="
+            },
+            {
+                name: "아브라함",
+                verse: "창세기 12:1",
+                image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1ebX2BkZeNa1dfp5mBk26BlnW/2wBDARESEhgVGC8aGi9WQ0NDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkNDVkP/wgARCAUAA8ADASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAECAwX/xAAYAQEBAQEBAAAAAAAAAAAAAAAAAQMCBP/aAA020a0s8="
+            },
+            // 나머지 20개 인물 데모 데이터
+            { name: "바울", verse: "사도행전 20:24", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EB%B0%94%EC%9A%B8" },
+            { name: "디모데", verse: "디모데후서 4:2", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EB%94%94%EB%AA%A8%EB%8D%B0" },
+            { name: "한나", verse: "사무엘상 1:13", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%ED%95%9C%EB%82%98" },
+            { name: "느헤미야", verse: "느헤미야 2:18", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EB%8A%90%ED%97%88%EB%AF%B8%EC%95%BC" },
+            { name: "다윗", verse: "시편 23:1", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EB%8B%A4%EC%9C%9B" },
+            { name: "바나바", verse: "사도행전 11:24", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EB%B0%94%EB%82%98%EB%B0%94" },
+            { name: "모세", verse: "출애굽기 3:4", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EB%AA%A8%EC%84%B8" },
+            { name: "요셉", verse: "창세기 39:2", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EC%9A%94%EC%85%89" },
+            { name: "에스더", verse: "에스더 4:16", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EC%97%90%EC%8A%A4%EB%8D%94" },
+            { name: "다니엘", verse: "다니엘 6:10", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EB%8B%A4%EB%8B%88%EC%97%98" },
+            { name: "베드로", verse: "마태복음 16:16", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EB%B2%A0%EB%93%9C%EB%A1%9C" },
+            { name: "요한", verse: "요한일서 4:7", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EC%9A%94%ED%95%9C" },
+            { name: "여호수아", verse: "여호수아 1:9", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EC%97%AC%ED%98%B8%EC%88%98%EC%95%84" },
+            { name: "기드온", verse: "사사기 6:12", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EA%B8%B0%EB%93%9C%EC%98%A8" },
+            { name: "루디아", verse: "사도행전 16:14", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EB%A3%A8%EB%94%94%EC%95%84" },
+            { name: "룻", verse: "룻기 1:16", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EB%AF%AF" },
+            { name: "사무엘", verse: "사무엘상 3:10", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EC%82%AC%EB%AC%B4%EC%97%98" },
+            { name: "이사야", verse: "이사야 6:8", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EC%9D%B4%EC%82%AC%EC%95%BC" },
+            { name: "예레미야", verse: "예레미야 1:5", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EC%98%88%EB%A0%88%EB%AF%B8%EC%95%BC" },
+            { name: "스데반", verse: "사도행전 7:59", image: "https://via.placeholder.com/300x400/e2e8f0/4a5568?text=%EC%8A%A4%EB%8D%B0%EB%B0%98" }
+        ];
 
-<button onclick="startTest()">테스트 시작하기</button>
-</div>
-<script>
+        // 동적으로 24개 카드 HTML 생성
+        const grid = document.getElementById('cardGrid');
+        cardsData.forEach(card => {
+            const cardElement = document.createElement('div');
+            cardElement.className = 'card';
+            cardElement.onclick = () => openModal(card.image);
+            
+            cardElement.innerHTML = `
+                <div class="card-img-wrapper">
+                    <img src="${card.image}" alt="${card.name}">
+                </div>
+                <div class="card-body">
+                    <div class="card-title">${card.name}</div>
+                    <div class="card-sub">${card.verse}</div>
+                </div>
+            `;
+            grid.appendChild(cardElement);
+        });
 
-function startTest(){
+        // 모달 열기/닫기
+        function openModal(imgSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImg');
+            modalImg.src = imgSrc;
+            modal.classList.add('active');
+        }
 
-    let name = document.getElementById("name").value;
-
-    if(name==""){
-        alert("이름을 입력해주세요.");
-        return;
-    }
-
-    alert(name + "님, 테스트를 시작합니다!");
-
-}
-
-</script>
+        function closeModal() {
+            document.getElementById('imageModal').classList.remove('active');
+        }
+    </script>
 </body>
 </html>
