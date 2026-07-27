@@ -2,23 +2,24 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>성경 인물 유형 테스트</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>성경인물 유형 TEST</title>
     <style>
         :root {
-            --bg-color: #f5f7fa;
+            --primary-color: #6c5ce7;
+            --bg-color: #f8f9fa;
             --card-bg: #ffffff;
-            --primary-color: #4a6fa5;
-            --primary-hover: #3b5984;
-            --text-color: #333333;
-            --sub-text: #666666;
+            --text-color: #2d3436;
+            --sub-text: #636e72;
+            --accent-color: #a29bfe;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -28,373 +29,364 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 15px;
         }
 
         .container {
             width: 100%;
             max-width: 480px;
-            background-color: var(--card-bg);
+            background: var(--card-bg);
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            padding: 30px 20px;
+            padding: 24px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* 시작 화면 */
-        .screen { display: none; }
-        .screen.active { display: block; }
+        /* Screen Switch */
+        .screen {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .screen.active {
+            display: block;
+        }
 
-        h1 {
-            font-size: 1.5rem;
-            color: var(--primary-color);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Start Screen */
+        .start-title {
+            font-size: 1.8rem;
+            font-weight: 700;
             margin-bottom: 12px;
+            color: var(--primary-color);
         }
-
-        p {
+        .start-desc {
             font-size: 0.95rem;
             color: var(--sub-text);
             line-height: 1.5;
-            margin-bottom: 25px;
+            margin-bottom: 24px;
         }
 
-        .btn {
+        /* Progress Bar */
+        .progress-container {
             width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 12px;
-            background-color: var(--primary-color);
-            color: white;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn:hover {
-            background-color: var(--primary-hover);
-        }
-
-        /* 진행 바 */
-        .progress-bar {
-            width: 100%;
+            background-color: #e9ecef;
             height: 8px;
-            background-color: #e0e6ed;
             border-radius: 4px;
             margin-bottom: 20px;
             overflow: hidden;
         }
-
-        .progress {
+        .progress-bar {
             height: 100%;
             width: 0%;
             background-color: var(--primary-color);
             transition: width 0.3s ease;
         }
 
-        /* 질문 영역 */
-        .q-number {
+        .question-number {
             font-size: 0.85rem;
-            color: var(--primary-color);
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-
-        .q-text {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 30px;
-            word-break: keep-all;
-        }
-
-        /* 선택지 버튼 */
-        .option-btn {
-            width: 100%;
-            padding: 18px;
-            margin-bottom: 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            background-color: #fff;
-            color: var(--text-color);
-            font-size: 0.95rem;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-align: left;
-            word-break: keep-all;
-            line-height: 1.4;
-        }
-
-        .option-btn:hover {
-            border-color: var(--primary-color);
-            background-color: #f0f4f8;
-        }
-
-        /* 결과 화면 */
-        .result-badge {
-            display: inline-block;
-            padding: 6px 14px;
-            background-color: #e8f0fe;
             color: var(--primary-color);
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
             margin-bottom: 10px;
         }
 
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            line-height: 1.4;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            border: 2px solid #edf2f7;
+            background: var(--card-bg);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            line-height: 1.4;
+            text-align: left;
+        }
+        .btn:hover, .btn:active {
+            border-color: var(--primary-color);
+            background-color: #f3f0ff;
+            color: var(--primary-color);
+        }
+
+        .primary-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            text-align: center;
+            padding: 16px;
+        }
+        .primary-btn:hover, .primary-btn:active {
+            background-color: #5b4bc4;
+            color: white;
+        }
+
+        /* Result Screen */
+        .result-subtitle {
+            font-size: 0.9rem;
+            color: var(--sub-text);
+            margin-bottom: 6px;
+        }
         .result-title {
             font-size: 1.8rem;
-            color: #2c3e50;
-            margin-bottom: 8px;
-        }
-
-        .result-quote {
-            font-style: italic;
+            font-weight: 700;
             color: var(--primary-color);
-            font-size: 0.95rem;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
-
-        .result-box {
-            background-color: #f8fafc;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: left;
-            margin-bottom: 25px;
+        .verse-box {
+            background-color: #f3f0ff;
+            border-left: 4px solid var(--primary-color);
+            padding: 14px;
+            border-radius: 0 10px 10px 0;
             font-size: 0.9rem;
-            line-height: 1.6;
+            color: #4a4a4a;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            text-align: left;
         }
-
-        .result-box h4 {
-            margin-bottom: 8px;
-            color: #2d3748;
+        .verse-ref {
+            display: block;
+            margin-top: 6px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-align: right;
+        }
+        .result-desc {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-color);
+            margin-bottom: 24px;
+            text-align: left;
+            background: #fafafa;
+            padding: 16px;
+            border-radius: 12px;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- 1. 시작 화면 -->
-        <div id="startScreen" class="screen active">
-            <h1>나의 성경 인물 유형 테스트</h1>
-            <p>10개의 간단한 질문에 답하고<br>나와 가장 닮은 성경 속 인물을 찾아보세요!</p>
-            <button class="btn" onclick="startTest()">테스트 시작하기</button>
-        </div>
-
-        <!-- 2. 질문 화면 -->
-        <div id="questionScreen" class="screen">
-            <div class="progress-bar">
-                <div class="progress" id="progress"></div>
-            </div>
-            <div class="q-number" id="qNumber">Q1</div>
-            <div class="q-text" id="qText">질문 내용이 들어갑니다.</div>
-            
-            <button class="option-btn" id="optA" onclick="selectOption('A')">선택지 A</button>
-            <button class="option-btn" id="optB" onclick="selectOption('B')">선택지 B</button>
-        </div>
-
-        <!-- 3. 결과 화면 -->
-        <div id="resultScreen" class="screen">
-            <div class="result-badge" id="resType">유형 명칭</div>
-            <h2 class="result-title" id="resName">인물 이름</h2>
-            <div class="result-quote" id="resQuote">"핵심 문구"</div>
-            
-            <div class="result-box">
-                <h4>📌 나만의 특징</h4>
-                <p id="resDesc">인물 상세 설명 및 특징이 표시됩니다.</p>
-            </div>
-
-            <button class="btn" onclick="restartTest()">다시 테스트하기</button>
-        </div>
+<div class="container">
+    <!-- 1. 시작 화면 -->
+    <div id="start-screen" class="screen active">
+        <div style="font-size: 3rem; margin-bottom: 10px;">📖</div>
+        <h1 class="start-title">성경인물 유형 TEST</h1>
+        <p class="start-desc">40가지 질문을 통해 나와 가장 닮은 성경 속 인물과 나에게 주시는 말씀 구절을 확인해 보세요!</p>
+        <button class="btn primary-btn" onclick="startTest()">테스트 시작하기</button>
     </div>
 
-    <script>
-        // 10가지 인물 정보 데이터베이스
-        const characters = {
-            ezra: {
-                name: "에스라",
-                type: "성경탐구형 (말씀 연구자형)",
-                quote: "이 말씀, 그냥 넘기기엔 너무 궁금해요.",
-                desc: "성경을 깊이 파고들며 묵상하는 진리의 뿌리 세움꾼입니다. 본문 탐구와 신학적 질문에 열정이 있으며 깊이 있는 신앙을 지향합니다."
-            },
-            tabitha: {
-                name: "다비다 (도르가)",
-                type: "사랑실천형 (자비 행위자형)",
-                quote: "작은 손길이 큰 사랑이 됩니다.",
-                desc: "말보다 행동으로 사랑을 나누며, 아프고 소외된 이들을 따뜻하게 돌보는 섬김의 사람입니다."
-            },
-            paul: {
-                name: "바울",
-                type: "비전추구형 (소명리더형)",
-                quote: "큰 그림을 그리며 앞으로 나아갑니다.",
-                desc: "하나님 나라와 복음을 위해 담대하게 비전을 세우고 추진하는 행동파 영적 리더입니다."
-            },
-            timothy: {
-                name: "디모데",
-                type: "말씀전달형 (진리교사형)",
-                quote: "말씀이 가슴에 들어오면 그냥 지나칠 수 없어요!",
-                desc: "깨달은 말씀의 감동과 진리를 사람들에게 열정적으로 전달하고 가르치는 사명자입니다."
-            },
-            elijah: {
-                name: "엘리야",
-                type: "영적전투형 (기도세움꾼)",
-                quote: "세미한 소리 가운데 주님의 뜻을 듣습니다.",
-                desc: "세상의 흐름에 타협하지 않고 오직 하나님의 음성에 귀 기울이며 기도와 영적 전투에 힘쓰는 파수꾼입니다."
-            },
-            abraham: {
-                name: "아브라함",
-                type: "믿음순종형 (모험가형)",
-                quote: "너의 본토 친척 아비 집을 떠나 내가 지시할 땅으로 가라.",
-                desc: "보이지 않는 길이라도 하나님의 약속 하나만을 믿고 담대히 발걸음을 내딛는 순종의 사람입니다."
-            },
-            hannah: {
-                name: "한나",
-                type: "간구기도형 (통곡의 기도자)",
-                quote: "내 마음을 여호와 앞에 토한 것뿐입니다.",
-                desc: "마음의 고통과 애통함을 간절한 기도로 승화시키며 하나님과의 깊은 친밀함을 누리는 기도자입니다."
-            },
-            nehemiah: {
-                name: "느헤미야",
-                type: "공동체건설형 (행정기획가)",
-                quote: "일어나 무너진 성벽을 다시 건축하자!",
-                desc: "무너진 공동체를 정비하고 강한 기획력과 실행력으로 조직을 다시 일으켜 세우는 정리가입니다."
-            },
-            david: {
-                name: "다윗",
-                type: "찬양예배형 (순수한 동행자)",
-                quote: "여호와는 나의 목자시니 내게 부족함이 없으리로다.",
-                desc: "어떠한 상황 속에서도 하나님을 찬양하고 예배하며, 정직하고 순수한 마음으로 동행하는 사람입니다."
-            },
-            barnabas: {
-                name: "바나바",
-                type: "격려격려형 (위로와 동역자)",
-                quote: "착한 사람이요, 성령과 믿음이 충만한 사람.",
-                desc: "사람들의 가능성을 발견해 주고 격려하며, 사람과 사람을 연결해 주는 포용력 넘치는 위로자입니다."
-            }
-        };
+    <!-- 2. 질문 화면 -->
+    <div id="quiz-screen" class="screen">
+        <div class="progress-container">
+            <div id="progress-bar" class="progress-bar"></div>
+        </div>
+        <div id="question-number" class="question-number">Q1 / 40</div>
+        <div id="question-text" class="question-text">질문 내용이 여기에 들어갑니다.</div>
+        <button id="btn-a" class="btn" onclick="selectAnswer('A')">A 선택지</button>
+        <button id="btn-b" class="btn" onclick="selectAnswer('B')">B 선택지</button>
+    </div>
 
-        // 10개 질문 및 선택지 (선택 시 연결되는 인물 키값)
-        const questions = [
-            {
-                q: "1. 말씀을 대할 때 나에게 더 가까운 모습은?",
-                a: { text: "왜 이런 구절이 쓰였는지 배경과 의미를 깊이 연구한다.", key: "ezra" },
-                b: { text: "말씀을 통해 깨달은 감동을 곧바로 누군가에게 전하고 싶다.", key: "timothy" }
-            },
-            {
-                q: "2. 공동체 안에서 나에게 더 편한 역할은?",
-                a: { text: "주변에 도움이 필요한 사람을 찾아 실질적으로 챙겨준다.", key: "tabitha" },
-                b: { text: "힘들어하는 사람 곁에서 이야기를 듣고 위로와 격려를 해준다.", key: "barnabas" }
-            },
-            {
-                q: "3. 새로운 일을 시작할 때 나의 방식은?",
-                a: { text: "하나님의 거대한 비전과 목적을 먼저 바라보고 방향을 잡는다.", key: "paul" },
-                b: { text: "보이지 않는 미래라도 주님의 말씀이라면 일단 믿고 출발한다.", key: "abraham" }
-            },
-            {
-                q: "4. 기도할 때 나와 더 비슷한 스타일은?",
-                a: { text: "내 마음의 아픔과 솔직한 심정을 하나님께 토로하며 기도한다.", key: "hannah" },
-                b: { text: "세상의 소음을 뒤로하고 조용히 하나님의 세미한 음성을 기다린다.", key: "elijah" }
-            },
-            {
-                q: "5. 공동체에 어려움이나 문제가 생겼을 때 나의 행동은?",
-                a: { text: "문제를 구체적으로 분석하고 체계적인 해결 방안을 기획한다.", key: "nehemiah" },
-                b: { text: "하나님께 마음을 드리고 찬양과 예배로 정면 돌파한다.", key: "david" }
-            },
-            {
-                q: "6. 신앙생활에서 내가 더 중요하게 생각하는 가치는?",
-                a: { text: "성경을 바르게 이해하고 체계적으로 지식을 갖추는 것", key: "ezra" },
-                b: { text: "배운 말씀을 삶속에서 실천하고 봉사하는 것", key: "tabitha" }
-            },
-            {
-                q: "7. 누군가를 양육하거나 도울 때 나의 모습은?",
-                a: { text: "명확한 진리와 말씀을 가르쳐 신앙의 기준을 잡아준다.", key: "timothy" },
-                b: { text: "상대방의 잠재력을 믿어주고 칭찬과 격려로 세워준다.", key: "barnabas" }
-            },
-            {
-                q: "8. 하나님이 나에게 원하시는 삶의 모습은?",
-                a: { text: "안주하지 않고 새로운 영역과 사명을 향해 도전하는 삶", key: "paul" },
-                b: { text: "현재 내 삶의 자리에서 기쁨으로 하나님을 찬양하는 삶", key: "david" }
-            },
-            {
-                q: "9. 내 신앙의 가장 큰 동력(힘)은?",
-                a: { text: "하나님이 주시는 불같은 소명과 약속에 대한 순종", key: "abraham" },
-                b: { text: "골방에서 하나님과 독대하며 나누는 깊은 기도", key: "hannah" }
-            },
-            {
-                q: "10. 조직이나 팀을 정비할 때 더 마음이 가는 방향은?",
-                a: { text: "목표 달성을 위해 무너진 시스템을 신속히 재건하는 것", key: "nehemiah" },
-                b: { text: "영적 영분별력을 가지고 거룩한 정체성을 지키는 것", key: "elijah" }
-            }
-        ];
+    <!-- 3. 결과 화면 -->
+    <div id="result-screen" class="screen">
+        <p class="result-subtitle">나와 닮은 성경 인물은?</p>
+        <h2 id="result-title" class="result-title">인물 이름</h2>
+        
+        <div class="verse-box">
+            <span id="result-verse">성경 구절 본문</span>
+            <span id="result-ref" class="verse-ref">(성경 장:절)</span>
+        </div>
 
-        let currentQ = 0;
-        let scores = {};
+        <div id="result-desc" class="result-desc">
+            유형 설명이 들어가는 공간입니다.
+        </div>
 
-        function startTest() {
-            currentQ = 0;
-            // 점수 초기화
-            for (let k in characters) scores[k] = 0;
-            
-            showScreen('questionScreen');
+        <button class="btn primary-btn" onclick="restartTest()">다시 테스트하기</button>
+    </div>
+</div>
+
+<script>
+    // 질문 데이터 (40문항 및 유형 매핑)
+    const questions = [
+        { q: "선택해 주세요.", a: "나는 하나님의 큰 그림과 뜻을 생각하며 행동한다.", b: "나는 하나님의 뜻을 깊이 연구하고 분석한다.", typeA: "바울", typeB: "에스라" },
+        { q: "선택해 주세요.", a: "조용히 기도하며 하나님의 음성을 듣는 시간을 소중히 여긴다.", b: "교회 공동체와 함께 있는 시간을 소중히 여긴다.", typeA: "한나", typeB: "바나바" },
+        { q: "선택해 주세요.", a: "사람들을 돌보고 사랑을 실천할 때 보람을 느낀다.", b: "내가 맡은 일이나 사역을 끝까지 완수할 때 성취감을 느낀다.", typeA: "다비다", typeB: "바울" },
+        { q: "선택해 주세요.", a: "말씀을 전하거나 가르칠 때 은혜를 많이 받는다.", b: "복음을 전하고 전도하는 일이 중요하다고 느낀다.", typeA: "디모데", typeB: "아브라함" },
+        { q: "선택해 주세요.", a: "예배 중 창의적인 요소 (영상, 음악, 글 등)에 끌린다.", b: "기도와 묵상으로 하나님과 교제하는 시간이 중요하다.", typeA: "다윗", typeB: "한나" },
+        { q: "선택해 주세요.", a: "새로운 곳, 새로운 사역을 시도하는 것이 두렵지 않다.", b: "안정되고 익숙한 환경에서 섬기기를 선호한다.", typeA: "아브라함", typeB: "느헤미야" },
+        { q: "선택해 주세요.", a: "하나님의 뜻을 직관적으로 '느낀다'는 경험을 자주 한다.", b: "하나님의 뜻은 말씀 속에서 해석하고 정리하는 게 맞다고 생각한다.", typeA: "엘리야", typeB: "디모데" },
+        { q: "선택해 주세요.", a: "누군가의 짐을 나누어 줄 수 있을 때 기쁘다.", b: "하나님의 계획을 품고 리더로 세워지는 것을 꿈꾼다.", typeA: "느헤미야", typeB: "바울" },
+        { q: "선택해 주세요.", a: "기도할 때 종종 눈물이 나고 감정이 북받친다.", b: "아이디어나 창작으로 나를 표현할 때 기쁨이 있다.", typeA: "한나", typeB: "다윗" },
+        { q: "선택해 주세요.", a: "나는 문제 해결보다 사람의 마음을 보듬는 쪽에 가깝다.", b: "나는 구체적인 실행 계획과 실천을 중시한다.", typeA: "다비다", typeB: "바울" },
+        { q: "선택해 주세요.", a: "나는 영감을 잘 받고 즉흥적인 메시지를 떠올리는 편이다.", b: "나는 논리적인 흐름과 교재를 선호한다.", typeA: "엘리야", typeB: "에스라" },
+        { q: "선택해 주세요.", a: "고용한 시간보다 활기찬 교제가 더 힘이 된다.", b: "많은 사람보다 하나님 한 분과의 깊은 교제를 선호한다.", typeA: "바나바", typeB: "한나" },
+        { q: "선택해 주세요.", a: "누군가를 돕거나 물질을 나누는 것이 자연스럽다.", b: "다른 사람을 훈련시키거나 이끌어주는 게 더 익숙하다.", typeA: "다비다", typeB: "디모데" },
+        { q: "선택해 주세요.", a: "내가 받은 은혜를 글이나 디자인, 노래로 표현하고 싶다.", b: "받은 은혜를 바로 실천하고 싶어진다.", typeA: "다윗", typeB: "디모데" },
+        { q: "선택해 주세요.", a: "나는 '말씀 구절'을 깊이 묵상하고 연구하는 것을 즐긴다.", b: "나는 말씀을 삶에 적용하고 살아내는 데 관심이 많다.", typeA: "에스라", typeB: "디모데" },
+        { q: "선택해 주세요.", a: "새로운 땅, 새로운 환경이 오히려 기대된다.", b: "지금 내 자리에서 충실히 섬기고 싶다.", typeA: "아브라함", typeB: "느헤미야" },
+        { q: "선택해 주세요.", a: "하나님과 감정적으로 연결된 느낌을 자주 경험한다.", b: "하나님과 지적으로 교감할 때 은혜가 된다.", typeA: "엘리야", typeB: "에스라" },
+        { q: "선택해 주세요.", a: "누군가를 위로하거나 품어줄 때 내 모습이 진짜 같다.", b: "누군가를 지도하고 방향을 잡아줄 때 나다움을 느낀다.", typeA: "다비다", typeB: "디모데" },
+        { q: "선택해 주세요.", a: "공동체 안에서 '함께'하는 게 너무 소중하다.", b: "혼자만의 시간 속에서 임재를 느낀다.", typeA: "바나바", typeB: "한나" },
+        { q: "선택해 주세요.", a: "내가 한 일보다, 내가 품은 사람들의 이야기가 더 기억에 남는다.", b: "내가 이루어낸 결과와 프로젝트가 기억에 남는다.", typeA: "다비다", typeB: "바울" },
+        { q: "선택해 주세요.", a: "하나님께 받은 비전이 삶의 방향이 되기를 원한다.", b: "오늘 하루 속에 하나님의 뜻이 어떻게 나타났는지 돌아보는 편이다.", typeA: "바울", typeB: "엘리야" },
+        { q: "선택해 주세요.", a: "사람들의 영혼을 향한 하나님의 마음을 나누고 싶다.", b: "사람들의 필요를 실제로 채워주는 일에 마음이 움직인다.", typeA: "바나바", typeB: "느헤미야" },
+        { q: "선택해 주세요.", a: "내게 감동을 주는 말씀이 있으면 누군가에게 꼭 전하고 싶다.", b: "감동받은 말씀을 나만의 방법으로 표현해 보고 싶다.", typeA: "디모데", typeB: "다윗" },
+        { q: "선택해 주세요.", a: "혼자만의 기도 시간을 정기적으로 지키려고 한다.", b: "예배와 모임 안에서 하나님을 느끼는 시간이 더 힘이 된다.", typeA: "한나", typeB: "바나바" },
+        { q: "선택해 주세요.", a: "하나님의 뜻을 직관적으로 깨닫는 순간들이 종종 있다.", b: "하나님의 뜻을 이해하기 위해 묵상과 질문을 반복한다.", typeA: "엘리야", typeB: "에스라" },
+        { q: "선택해 주세요.", a: "맡은 일에 최선을 다하는 것이 곧 신앙이라고 생각한다.", b: "내가 돕는 사람의 회복을 보는 것이 더 중요하다.", typeA: "느헤미야", typeB: "다비다" },
+        { q: "선택해 주세요.", a: "복음이 필요한 곳에 간다는 것 자체에 큰 의미를 둔다.", b: "지금 내가 있는 자리에서 성실하게 살아내는 게 중요하다.", typeA: "아브라함", typeB: "느헤미야" },
+        { q: "선택해 주세요.", a: "말씀을 분석하고 구조화하는 것을 좋아한다.", b: "말씀이 더 잘 전달되도록 ppt나 음악, 영상자료에 관심이 많다.", typeA: "에스라", typeB: "다윗" },
+        { q: "선택해 주세요.", a: "하나님의 마음을 듣기 위해 조용히 머무는 시간이 필요하다.", b: "하나님은 공동체의 관계속에서 더 깊이 느껴진다고 믿는다.", typeA: "한나", typeB: "바나바" },
+        { q: "선택해 주세요.", a: "예배 중 떠오르는 찬양이나 시를 써본 적이 있다.", b: "선교를 꿈꿔본 적이 있다.", typeA: "다윗", typeB: "아브라함" },
+        { q: "선택해 주세요.", a: "미래를 바라보며 하나님의 뜻을 찾는데 힘쓴다.", b: "지금 당장 무엇을 해야할지, 실행이 고민된다.", typeA: "바울", typeB: "느헤미야" },
+        { q: "선택해 주세요.", a: "나의 신앙은 감정과 직관의 영역이 크다.", b: "나의 신앙은 사고와 분별의 과정에서 자란다.", typeA: "엘리야", typeB: "에스라" },
+        { q: "선택해 주세요.", a: "나는 누군가를 격려하거나 위로하는 말에 은사가 있다.", b: "나는 누군가를 훈련하거나 안내하는 말에 강점이 있다.", typeA: "다비다", typeB: "디모데" },
+        { q: "선택해 주세요.", a: "성령의 인도하심은 마음의 울림과 감정으로 경험된다.", b: "성령께서 나를 복음과 전도의 마음을 갖도록 하신다.", typeA: "엘리야", typeB: "아브라함" },
+        { q: "선택해 주세요.", a: "내가 계획한 대로 흘러가기보다 하나님이 이끄시는 흐름을 따르고 싶다.", b: "계획과 정리가 먼저 되어야 평안한 마음이 생긴다.", typeA: "엘리야", typeB: "바울" },
+        { q: "선택해 주세요.", a: "하나님께 받은 재능을 예술로 표현해내고 싶다.", b: "하나님께서 나에게 열정의 은사를 주셨다.", typeA: "다윗", typeB: "아브라함" },
+        { q: "선택해 주세요.", a: "찬양 속에 주시는 은혜를 깊이 묵상한다.", b: "성경을 역사와 맥락 속에서 분석하며 깊이 보려고 한다.", typeA: "다윗", typeB: "에스라" },
+        { q: "선택해 주세요.", a: "새로운 환경에서 하나님의 일을 발견하는 것을 기대한다.", b: "익숙한 자리에서 하나님께 신실함을 드리는 것이 소중하다.", typeA: "아브라함", typeB: "느헤미야" },
+        { q: "선택해 주세요.", a: "공동체 안에서 자연스럽게 사람들과 관계를 맺는 편이다.", b: "사람보다 하나님과의 일대일관계가 더 깊다고 느낀다.", typeA: "바나바", typeB: "한나" },
+        { q: "선택해 주세요.", a: "나는 신앙이 곧 사랑의 실천이라고 믿는다.", b: "나는 신앙이 곧 공동체인 '교회'라고 생각한다.", typeA: "다비다", typeB: "바나바" }
+    ];
+
+    // 인물별 결과 정보
+    const characterData = {
+        "디모데": {
+            verse: "너는 말씀을 전파하라 때를 얻든지 못 얻든지 항상 힘쓰라",
+            ref: "(디모데후서 4:2)",
+            desc: "당신은 말씀을 늘 가까이하고 적용하며, 다른 이들을 가르치고 세워주는 말씀전달형 인물입니다."
+        },
+        "한나": {
+            verse: "한나가 속으로 말하매 입술만 동하고 음성은 들리지 아니하므로 엘리는 그가 취한 줄로 생각한지라",
+            ref: "(사무엘상 1:13)",
+            desc: "당신은 조용히 하나님과 일대일로 깊이 기도하며 마음을 토해내는 기도집중형 인물입니다."
+        },
+        "다윗": {
+            verse: "여호와는 나의 목자시니 내게 부족함이 없으리로다",
+            ref: "(시편 23:1)",
+            desc: "당신은 음악, 글, 감성을 통해 하나님을 향한 은혜를 아름답게 표현하는 창의표현형 인물입니다."
+        },
+        "바나바": {
+            verse: "바나바는 착한 사람이요 성령과 믿음이 충만한 자라 이에 큰 무리가 주께 더하더라",
+            ref: "(사도행전 11:24)",
+            desc: "당신은 사람들을 격려하고 공동체 안에서 사랑으로 사람들을 묶어주는 관계중심형 인물입니다."
+        },
+        "아브라함": {
+            verse: "여호와께서 아브람에게 이르시되 너는 너의 본토 친척과 아비 집을 떠나 내가 네게 지시할 땅으로 가라",
+            ref: "(창세기 12:1)",
+            desc: "당신은 하나님의 부르심을 따라 새로운 영역 도전과 선교적 삶을 두려워하지 않는 선교개척형 인물입니다."
+        },
+        "엘리야": {
+            verse: "불 후에 세미한 소리가 있는지라 엘리야가 듣고 겉옷으로 얼굴을 가리우고",
+            ref: "(열왕기상 19:12-13)",
+            desc: "당신은 성령의 인도하심과 세미한 음성에 민감하며 직관적 감동으로 동행하는 예언직관형 인물입니다."
+        },
+        "에스라": {
+            verse: "에스라가 여호와의 율법을 연구하여 준행하며 율례와 규례를 이스라엘에게 가르치기로 결심하였었더라",
+            ref: "(에스라 7:10)",
+            desc: "당신은 성경 말씀을 체계적으로 연구하고 깊이 묵상하는 것을 즐기는 성경탐구형 인물입니다."
+        },
+        "다비다": {
+            verse: "욥바에 다비다라 하는 여제자가 있으니 그 이름을 번역하면 도르가라 선행과 구제하는 일이 심히 많더니",
+            ref: "(사도행전 9:36)",
+            desc: "당신은 따뜻한 손길로 주변의 연약한 이웃을 보살피고 구제하며 사랑을 몸소 실천하는 사랑실천형 인물입니다."
+        },
+        "바울": {
+            verse: "내가 달려갈 길과 주 예수께 받은 사명 곧 하나님의 은혜의 복음을 증언하는 일을 마치려 함에는 나의 생명조차 조금도 귀한 것으로 여기지 아니하노라",
+            ref: "(사도행전 20:24)",
+            desc: "당신은 하나님의 원대한 비전을 품고 사명을 위해 열정적으로 달려가는 비전추구형 인물입니다."
+        },
+        "느헤미야": {
+            verse: "내 하나님께서 내 마음을 감화하사 예루살렘을 위하여 무엇을 하게 하신 것을 내가 아무에게도 말하지 아니하고",
+            ref: "(느헤미야 2:12)",
+            desc: "당신은 주어진 자리에서 묵묵히 충성하며 맡은 임무를 실천으로 완수해 내는 실천봉사형 인물입니다."
+        }
+    };
+
+    let currentQ = 0;
+    let scores = {};
+
+    function startTest() {
+        currentQ = 0;
+        scores = {};
+        showScreen('quiz-screen');
+        renderQuestion();
+    }
+
+    function renderQuestion() {
+        const qData = questions[currentQ];
+        document.getElementById('question-number').innerText = `Q${currentQ + 1} / ${questions.length}`;
+        document.getElementById('question-text').innerText = qData.q === "선택해 주세요." ? `Q${currentQ + 1}. 알맞은 항목을 선택해 주세요.` : qData.q;
+        document.getElementById('btn-a').innerText = qData.a;
+        document.getElementById('btn-b').innerText = qData.b;
+
+        const progressPercent = ((currentQ) / questions.length) * 100;
+        document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+    }
+
+    function selectAnswer(choice) {
+        const qData = questions[currentQ];
+        const selectedType = choice === 'A' ? qData.typeA : qData.typeB;
+
+        scores[selectedType] = (scores[selectedType] || 0) + 1;
+
+        currentQ++;
+        if (currentQ < questions.length) {
             renderQuestion();
+        } else {
+            showResult();
         }
+    }
 
-        function renderQuestion() {
-            const q = questions[currentQ];
-            document.getElementById('qNumber').innerText = `Q${currentQ + 1} / ${questions.length}`;
-            document.getElementById('qText').innerText = q.q;
-            document.getElementById('optA').innerText = q.a.text;
-            document.getElementById('optB').innerText = q.b.text;
-            
-            // 진행률 업데이트
-            const progressPercent = ((currentQ) / questions.length) * 100;
-            document.getElementById('progress').style.width = `${progressPercent}%`;
-        }
+    function showResult() {
+        let maxScore = -1;
+        let resultChar = "";
 
-        function selectOption(option) {
-            const q = questions[currentQ];
-            const selectedKey = (option === 'A') ? q.a.key : q.b.key;
-            
-            // 점수 가산
-            scores[selectedKey] = (scores[selectedKey] || 0) + 1;
-
-            currentQ++;
-            if (currentQ < questions.length) {
-                renderQuestion();
-            } else {
-                showResult();
+        for (const char in scores) {
+            if (scores[char] > maxScore) {
+                maxScore = scores[char];
+                resultChar = char;
             }
         }
 
-        function showResult() {
-            showScreen('resultScreen');
+        const data = characterData[resultChar] || characterData["디모데"];
 
-            // 가장 높은 점수를 받은 인물 찾기
-            let maxScore = -1;
-            let resultKey = "paul"; // 기본값
+        document.getElementById('result-title').innerText = resultChar;
+        document.getElementById('result-verse').innerText = `"${data.verse}"`;
+        document.getElementById('result-ref').innerText = data.ref;
+        document.getElementById('result-desc').innerText = data.desc;
 
-            for (let key in scores) {
-                if (scores[key] > maxScore) {
-                    maxScore = scores[key];
-                    resultKey = key;
-                }
-            }
+        showScreen('result-screen');
+    }
 
-            const res = characters[resultKey];
-            document.getElementById('resType').innerText = res.type;
-            document.getElementById('resName').innerText = res.name;
-            document.getElementById('resQuote').innerText = `"${res.quote}"`;
-            document.getElementById('resDesc').innerText = res.desc;
-        }
+    function restartTest() {
+        showScreen('start-screen');
+    }
 
-        function restartTest() {
-            showScreen('startScreen');
-        }
-
-        function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
-        }
-    </script>
+    function showScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+    }
+</script>
 </body>
 </html>
